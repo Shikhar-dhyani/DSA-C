@@ -5,7 +5,7 @@
 struct node
 {
     int data;
-    struct Node *next;
+    struct node *next;
 };
 
 struct node *insertafter(struct node *head, int ele)
@@ -63,12 +63,24 @@ struct node *insertBefore(struct node *head, int ele)
 
 struct node *delete (struct node *head, int ele)
 {
-    struct node *temp;
+    struct node *temp = head, *pre = NULL;
     if (head->data == ele)
     {
-        temp = head->next;
-        free(head);
-        head = temp;
+        head = head->next;
+        free(temp);
+        return head;
+    }
+    while (temp != NULL && temp->data != ele)
+    {
+        pre = temp;
+        temp = temp->next;
+    }
+    if (temp == NULL)
+        printf("Element not found\n");
+    else
+    {
+        pre->next = temp->next;
+        free(temp);
     }
     return head;
 }
@@ -101,6 +113,7 @@ int main()
                 scanf("%d", &value);
                 head = (struct node *)malloc(sizeof(struct node));
                 head->data = value;
+                head->next = NULL;
                 break;
             }
             else
