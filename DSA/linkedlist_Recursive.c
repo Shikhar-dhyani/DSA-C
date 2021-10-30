@@ -17,15 +17,14 @@ struct node *insertafter(struct node *head, int ele)
     {
         struct node *new = (struct node *)malloc(sizeof(struct node));
         int data;
+        printf("Enter data to be inserted : ");
         scanf("%d", &data);
         new->data = data;
         new->next = head->next;
         head->next = new;
     }
     else
-    {
         head->next = insertafter(head->next, ele);
-    }
     return head;
 }
 
@@ -40,6 +39,7 @@ struct node *insertBefore(struct node *head, int ele)
     {
         struct node *new = (struct node *)malloc(sizeof(struct node));
         int data;
+        printf("Enter data to be inserted : ");
         scanf("%d", &data);
         new->data = data;
         new->next = head;
@@ -97,6 +97,7 @@ int main()
                 scanf("%d", &value);
                 head = (struct node *)malloc(sizeof(struct node));
                 head->data = value;
+                head->next = NULL;
                 break;
             }
             else
