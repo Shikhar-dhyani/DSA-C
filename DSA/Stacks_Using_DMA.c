@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <limits.h>
 #include <stdlib.h>
+
 typedef struct Stacks_Using_DMA
 {
     int *data;
@@ -20,6 +21,22 @@ Stack *create(int size)
     s1->data = (int *)malloc(sizeof(int) * size);
     s1->top = -1;
     return s1;
+}
+
+void display(Stack *s1)
+{
+    int i;
+    if (s1->top == -1)
+    {
+        printf("\nStack is empty!!");
+    }
+    else
+    {
+        printf("\nStack is...\n");
+        for (i = s1->top; i >= 0; --i)
+            printf("%d ", s1->data[i]);
+        printf("\n");
+    }
 }
 
 int peek(Stack *s1)
@@ -46,14 +63,8 @@ void push(Stack *s1, int data)
 {
     if (s1->top == s1->size - 1)
     {
-        Stack *temp;
-        temp->top = s1->top;
-        temp->data = (int *)malloc(s1->size * 2);
-        temp->size = s1->size * 2;
-        for (int i = 0; i < s1->size; i++)
-            temp->data[i] = s1->data[i];
-        s1 = temp;
-        free(temp);
+        s1->data = (int *)realloc(s1->data, s1->size + 5);
+        s1->size = s1->size + 5;
     }
     s1->data[++s1->top] = data;
 }
@@ -67,7 +78,8 @@ int main()
         printf("1. Push\n");
         printf("2. Pop\n");
         printf("3. Peek\n");
-        printf("4. Exit\n");
+        printf("4. display\n");
+        printf("5. Exit\n");
 
         int choice, value;
         scanf("%d", &choice);
@@ -87,6 +99,9 @@ int main()
             printf("%d is the top element\n", value);
             break;
         case 4:
+            display(s1);
+            break;
+        case 5:
             return 0;
         default:
             printf("Enter valid choice \n");
