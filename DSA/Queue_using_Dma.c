@@ -29,7 +29,10 @@ bool isFull(struct QueueAdt *Q)
 void Enqueue(int data, struct QueueAdt *Q)
 {
     if (isFull(Q))
+    {
         Q->queue = (int *)realloc(Q->queue, Q->cap + 5);
+        Q->cap = Q->cap + 5;
+    }
     if (Q->rear == -1)
         Q->front = 0;
 
@@ -90,7 +93,7 @@ int main()
         printf("Enter your Choice : 1.Enqueue 2.Dequeue 3.IsEmpty 4.Front 5.Exit \n");
         int choice, value;
         scanf("%d", &choice);
-        
+
         switch (choice)
         {
         case 1:
@@ -118,7 +121,6 @@ int main()
         case 5:
             Display(Q);
             return 0;
-
         }
     }
     return 0;
