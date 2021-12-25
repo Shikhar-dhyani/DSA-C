@@ -50,29 +50,35 @@ void display(struct node *head)
     }
     return;
 }
-
+void topdisplay(struct node *head)
+{
+    printf("%d is top element \n", head->data);
+    return;
+}
 int main()
 {
     struct node *head = NULL, *temp = NULL;
     while (1)
     {
         printf("Enter Your choice : ");
-        printf("1.PUSH   2.POP   3.TOP   4. EXIT\n");
+        printf("1.PUSH   2.POP   3.TOP   4. DISPLAY 5.EXIT\n");
         int choice, value, data;
         scanf("%d", &choice);
         switch (choice)
         {
         case 1:
-            head = insert(head); 
+            head = insert(head);
             break;
         case 2:
             head = pop(head);
             break;
         case 3:
-            printf("%d is top element \n", head->data);
+            topdisplay(head);
             break;
         case 4:
             display(head);
+            break;
+        case 5:
             return 0;
         }
     }
