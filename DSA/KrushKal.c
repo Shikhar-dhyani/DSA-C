@@ -76,29 +76,43 @@ void print(graph *g)
     }
     printf("\n\n Graph is printed\n\n\n\n\n");
 }
-
-void select(list *head, int n)
+int find(int parent[], int i)
 {
-    if (head->next == NULL)
+    if (parent[i] == -1)
     {
-        free(head);
-        return;
+        return i;
     }
-    if (n == 0)
-    {
-        select(head->next, 0);
-        free(head);
-        return;
-    }
-    if (n == 1)
-    {
-        select(head->next, 0);
-        head->next = NULL;
-        return;
-    }
-    select(head->next, n - 1);
-    return;
+    return find(parent, parent[i]);
 }
+
+void select(graph *g, list *head, int n)
+{
+    list *ptr = head, *ptr1 = NULL;
+    int *parent = (int *)malloc(g->v * sizeof(int));
+    int i;
+    memset(parent, -1, sizeof(int) * g->v);
+    for (i = 0; ptr != NULL && i < n;)
+    {
+        int check1 = find(parent, ptr->sr - 1);
+        int check2 = find(parent, ptr->des - 1);
+        if (check1 != check2)
+        {
+            parent[ptr->des - 1] = ptr->sr - 1;
+            i++;
+        }
+        else
+        {
+            ptr1->next = ptr->next;
+            free(ptr);
+            ptr = ptr1;
+        }
+        ptr1 = ptr;
+        ptr = ptr->next;
+        if (i == n - 1)
+            ptr->next = NULL;
+    }
+}
+
 list *sortl(list *head, int sr, int des, int w)
 {
     if (head == NULL)
@@ -123,31 +137,16 @@ list *sortl(list *head, int sr, int des, int w)
     return head;
 }
 
-int find(int parent[], int i)
-{
-    if (parent[i] == -1)
-        return i;
-    return find(parent, parent[i]);
-}
-
 list *make_list(graph *g)
 {
     list *head = NULL;
-    int *parent = (int *)malloc(g->v * sizeof(int));
-    memset(parent, -1, sizeof(int) * g->v);
     for (int i = 0; i < g->v; i++)
     {
         node *temp = g->arr[i].pt;
         if (temp != NULL)
             while (temp)
             {
-                int check1 = find(parent, i);
-                int check2 = find(parent, temp->vertexno - 1);
-                if ((check1 == -1 && check2 == -1) || check1 != check2)
-                {
-                    head = sortl(head, i + 1, temp->vertexno, temp->weight);
-                    parent[temp->vertexno - 1] = i;
-                }
+                head = sortl(head, i + 1, temp->vertexno, temp->weight);
                 temp = temp->next;
             }
     }
@@ -179,6 +178,7 @@ int main()
     }
     print(Graph);
     list *head = make_list(Graph);
+    select(Graph, head, v - 1);
     printlist(head);
     return 0;
 }
