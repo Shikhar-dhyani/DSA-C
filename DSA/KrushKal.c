@@ -85,7 +85,7 @@ int find(int parent[], int i)
     return find(parent, parent[i]);
 }
 
-void select(graph *g, list *head, int n)
+void selectlist(graph *g, list *head, int n)
 {
     list *ptr = head, *ptr1 = NULL;
     int *parent = (int *)malloc(g->v * sizeof(int));
@@ -178,7 +178,7 @@ int main()
     }
     print(Graph);
     list *head = make_list(Graph);
-    select(Graph, head, v - 1);
+    selectlist(Graph, head, v - 1);
     printlist(head);
     return 0;
 }
